@@ -1,0 +1,190 @@
+﻿@model MusicQuiz.Web.Models.Quiz.QuestionViewModel
+@{
+    ViewData["Title"] = "Quiz";
+    var currentQuestionIndex = ViewBag.CurrentQuestionIndex as int? ?? 0;
+    var totalQuestions = ViewBag.TotalQuestions as int? ?? 0;
+    var answer = Model.UserAnswer;
+    var feedback = ViewBag.Feedback;
+    var attemptNumber = Model.AttemptNumber;
+
+    var questionStatuses = ViewBag.QuestionStatuses as List<string> ?? new List<string>();
+}
+<input type="hidden" id="feedback" value="@feedback" />
+
+@section Scripts {
+    <script src="~/js/selectAnswer.js?v=@DateTime.Now.Ticks"></script>
+    <script src="~/js/submitAnswer.js?v=@DateTime.Now.Ticks"></script>
+    <script src="~/js/enableButtons.js?v=@DateTime.Now.Ticks"></script>
+    <script src="~/js/playSingleAudio.js?v=@DateTime.Now.Ticks"></script>
+}
+
+<div class="quiz-container compact-quiz">
+    <div class="question-header mb-2">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div class="topic-difficulty mb-1">
+                <span class="badge bg-secondary me-2">Topic: @Model.SelectedTopic</span>
+                <span class="badge bg-secondary">Difficulty: @Model.SelectedDifficulty</span>
+            </div>
+            <div class="question-counter">
+                <div class="progress" style="height: 6px; width: 80px;">
+                    <div class="progress-bar bg-danger" role="progressbar"
+                         style="width: @(((currentQuestionIndex + 1) * 100) / totalQuestions)%"></div>
+                </div>
+                <span class="ms-2">@(currentQuestionIndex + 1) of @totalQuestions</span>
+            </div>
+        </div>
+        <h1 class="text-center mt-2 h4">Question @(currentQuestionIndex + 1)</h1>
+    </div>
+
+    <div class="card shadow-sm mb-3">
+        <div class="card-body p-3">
+            @if (!string.IsNullOrEmpty(Model.MusicReferenceFilePath))
+            {
+                <div class="audio-sections d-flex justify-content-center align-items-stretch gap-3">
+                    <div class="audio-player mb-0 equal-width-audio">
+                        <div class="audio-header mb-1">
+                            <h2 class="mb-1 h6">Reference: <strong>@Model.MusicReferenceName</strong></h2>
+                        </div>
+                        <div class="audio-control">
+                            <audio controls class="w-100">
+                                <source src="@Model.MusicReferenceFilePath" type="audio/*">
+                                <source src="@Model.MusicReferenceFilePath" type="audio/mpeg">
+                                <source src="@Model.MusicReferenceFilePath" type="audio/ogg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+
+                    <div class="audio-player mb-0 equal-width-audio">
+                        <div class="audio-header mb-1">
+                            <h2 class="mb-1 h6">Question</h2>
+                            <p class="mb-1 small">@Model.Question</p>
+                        </div>
+                        <div class="audio-control">
+                            <audio controls class="w-100">
+                                <source src="@Model.MusicQuestionFilePath" type="audio/*">
+                                <source src="@Model.MusicQuestionFilePath" type="audio/mpeg">
+                                <source src="@Model.MusicQuestionFilePath" type="audio/ogg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-3">
+        <div class="card-body p-3">
+            <h3 class="card-title text-center mb-2 h6">Select Your Answer</h3>
+
+            <form method="post" action="/Quiz/NextQuestion">
+                <div class="quiz-options-grid-2x2">
+                    @foreach (var option in Model.OptionsForQuiz)
+                    {
+                        var validId = "option_" + option.Replace(" ", "_").Replace(".", "p").Replace(",", "c").Replace("(", "").Replace(")", "").Replace("/", "_").Replace("\\", "_").Replace(":", "_");
+
+                        <div class="quiz-option-container">
+                            <label class="quiz-option text-center @(answer?.Equals(option) ?? false ? "selected" : "")"
+                                   id="@validId">
+                                <input type="radio"
+                                       name="selectedOption"
+                                       value="@option"
+                                @(answer?.Equals(option) ?? false ? "checked" : "")
+                                       class="quiz-radio"
+                                       onchange="selectOption('@validId', 'quiz-option')">
+                                <span class="quiz-option-text">@option</span>
+                            </label>
+                        </div>
+                    }
+                </div>
+
+                <input type="hidden" name="correctAnswer" value="@Model.CorrectAnswer" />
+                <input type="hidden" id="attemptNumber" name="attemptNumber" value="@attemptNumber" />
+                <input type="hidden" id="firstUserAnswer" name="firstUserAnswer" />
+
+                <div id="feedbackSection" class="feedback-container mt-3 mb-3"></div>
+
+                <div class="quiz-controls-wide mt-4">
+                    <button type="button" onclick="submitPreviousForm()"
+                            class="btn btn-outline-secondary extra-wide-button @(currentQuestionIndex == 0 ? "disabled" : "")"
+                    @(currentQuestionIndex == 0 ? "disabled" : "")>
+                        <i class="fas fa-arrow-left me-1"></i> Previous
+                    </button>
+
+                    <button type="button" id="submitButton"
+                            onclick="submitAnswer(); enableNextButton();"
+                            class="btn btn-danger extra-wide-button">
+                        <i class="fas fa-check me-1"></i> Submit
+                    </button>
+
+                    <button type="submit" id="nextButton"
+                            class="btn btn-outline-secondary extra-wide-button"
+                            disabled>
+                        @if (currentQuestionIndex == totalQuestions - 1)
+                        {
+                            <i class="fas fa-flag-checkered me-1"></i> @:Complete
+                        }
+                        else
+                        {
+                            <i class="fas fa-arrow-right me-1"></i> @:Next
+                        }
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <form id="previousForm" method="post" action="/Quiz/PreviousQuestion" style="display:none;"></form>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-2">
+            <div class="progress-indicator compact">
+                <div class="legend-items d-flex justify-content-center flex-wrap gap-2 mb-2 small">
+                    <div class="legend-item">
+                        <span class="status-icon correct-first"><i class="fas fa-check-circle"></i></span>
+                        <span>Correct (1st)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="status-icon correct-multiple"><i class="fas fa-check"></i></span>
+                        <span>Correct (Multi)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="status-icon incorrect"><i class="fas fa-times"></i></span>
+                        <span>Incorrect</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="status-icon unanswered"><i class="fas fa-minus"></i></span>
+                        <span>Unanswered</span>
+                    </div>
+                </div>
+
+                <div class="question-progress">
+                    @for (int i = 0; i < questionStatuses.Count; i++)
+                    {
+                        string statusClass = questionStatuses[i] switch
+                        {
+                            "correct-first" => "correct-first",
+                            "correct-multiple" => "correct-multiple",
+                            "incorrect" => "incorrect",
+                            _ => "unanswered"
+                        };
+
+                        string statusIcon = questionStatuses[i] switch
+                        {
+                            "correct-first" => "<i class=\"fas fa-check-circle\"></i>",
+                            "correct-multiple" => "<i class=\"fas fa-check\"></i>",
+                            "incorrect" => "<i class=\"fas fa-times\"></i>",
+                            _ => "<i class=\"fas fa-minus\"></i>"
+                        };
+
+                        <div class="question-status @(i == currentQuestionIndex ? "current" : "")">
+                            <div class="question-number small">Q@(i + 1)</div>
+                            <div class="status-indicator @statusClass">@Html.Raw(statusIcon)</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

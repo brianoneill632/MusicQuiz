@@ -1,0 +1,87 @@
+﻿@model MusicQuiz.Web.Models.Quiz.QuestionViewModel
+
+@{
+    ViewData["Title"] = "Add Question";
+}
+
+<h1>Add Question</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <input type="hidden" id="successMessage" value="@TempData["SuccessMessage"]" />
+}
+
+<form id="addQuestionForm" asp-action="AddQuestion" method="post" onsubmit="handleFormSubmit(event)">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label for="SelectedTopic">Topic</label>
+        <select asp-for="SelectedTopic" class="form-select form-control w-100 w-md-75" asp-items="@(new SelectList(Enum.GetValues(typeof(MusicQuiz.Core.Enums.Topic))))" autocomplete="off">
+            <option value="">Select a topic</option>
+        </select>
+        <span asp-validation-for="SelectedTopic" class="text-danger"></span>
+    </div>
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label for="SelectedDifficulty">Difficulty</label>
+        <select asp-for="SelectedDifficulty" class="form-select form-control w-100 w-md-75" asp-items="@(new SelectList(Enum.GetValues(typeof(MusicQuiz.Core.Enums.DifficultyLevel))))" autocomplete="off">
+            <option value="">Select a difficulty</option>
+        </select>
+        <span asp-validation-for="SelectedDifficulty" class="text-danger"></span>
+    </div>
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label asp-for="Question"></label>
+        <input asp-for="Question" class="form-control w-100 w-md-75" placeholder="Question" autocomplete="off" />
+        <span asp-validation-for="Question" class="text-danger"></span>
+    </div>
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label asp-for="MusicQuestionFilePath">Music Path</label>
+        <select asp-for="MusicQuestionFilePath"
+                class="form-select form-control w-100 w-md-75"
+                autocomplete="off">
+            <option value="">Select a music file</option>
+        </select>
+        <span asp-validation-for="MusicQuestionFilePath" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label asp-for="MusicReferenceFilePath">Reference Path</label>
+        <select asp-for="MusicReferenceFilePath"
+                class="form-select form-control w-100 w-md-75"
+                autocomplete="off">
+            <option value="">Select a reference file</option>
+        </select>
+        <span asp-validation-for="MusicReferenceFilePath" class="text-danger"></span>
+    </div>
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label asp-for="Options.CorrectAnswer">Correct Answer</label>
+        <input asp-for="Options.CorrectAnswer" class="form-control w-100 w-md-75" placeholder="Correct Answer" autocomplete="off" />
+        <span asp-validation-for="Options.CorrectAnswer" class="text-danger"></span>
+    </div>
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label asp-for="Options.WrongAnswerOne">Wrong Answer One</label>
+        <input asp-for="Options.WrongAnswerOne" class="form-control w-100 w-md-75" placeholder="Wrong Answer One" autocomplete="off" />
+        <span asp-validation-for="Options.WrongAnswerOne" class="text-danger"></span>
+    </div>
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label asp-for="Options.WrongAnswerTwo">Wrong Answer Two</label>
+        <input asp-for="Options.WrongAnswerTwo" class="form-control w-100 w-md-75" placeholder="Wrong Answer Two" autocomplete="off" />
+        <span asp-validation-for="Options.WrongAnswerTwo" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3" style="width: 100%; max-width: 100%;">
+        <label asp-for="Options.WrongAnswerThree">Wrong Answer Three</label>
+        <input asp-for="Options.WrongAnswerThree" class="form-control w-100 w-md-75" placeholder="Wrong Answer Three" autocomplete="off" />
+        <span asp-validation-for="Options.WrongAnswerThree" class="text-danger"></span>
+    </div>
+    <div class="d-flex flex-column align-items-center" style="width: 100%;">
+        <button type="submit" class="btn btn-primary w-100 w-md-75 mb-2" style="max-width: 300px;">Add</button>
+        <a asp-action="ViewQuesitons" class="btn btn-secondary w-100 w-md-75" style="max-width: 300px;">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/AddQuestionPopUp.js"></script>
+    <script src="~/js/loadMusicFiles.js"></script>
+}

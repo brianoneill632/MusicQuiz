@@ -1,0 +1,74 @@
+﻿@model List<MusicQuiz.Web.Models.Admin.UserLoginsViewModel>
+
+@{
+    ViewData["Title"] = "User Logins";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<p class="text-center">Welcome to the User Logins page. Here you can see the most recent logins and overall login statistics.</p>
+
+<div class="text-center" style="display: flex; justify-content: center; align-items: center;">
+    <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
+</div>
+
+<div class="chart-wrapper">
+    <div id="chartContainer">
+        <canvas id="loginsChart"></canvas>
+    </div>
+</div>
+
+<h2 class="centered mt-4">Recent User Logins</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-modern">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Last Login Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                DateTime now = DateTime.UtcNow;
+                DateTime thisWeekStart = now.AddDays(-(int)now.DayOfWeek + (int)DayOfWeek.Monday);
+                DateTime lastWeekStart = thisWeekStart.AddDays(-7);
+                DateTime twoWeeksAgoStart = thisWeekStart.AddDays(-14);
+                DateTime threeWeeksAgoStart = thisWeekStart.AddDays(-21);
+            }
+
+            @foreach (var user in Model)
+            {
+                string rowClass = "";
+
+                if (user.LastLoginDate >= thisWeekStart)
+                    rowClass = "recent";
+                else if (user.LastLoginDate >= lastWeekStart)
+                    rowClass = "last-week";
+                else if (user.LastLoginDate >= twoWeeksAgoStart)
+                    rowClass = "two-weeks";
+                else if (user.LastLoginDate >= threeWeeksAgoStart)
+                    rowClass = "three-weeks";
+                else
+                    rowClass = "older";
+
+                <tr class="@rowClass">
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@user.LastLoginDate.ToString("yyyy-MM-dd HH:mm")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-center">No user logins to display.</p>
+}
+
+<input type="hidden" id="weeklyLoginCounts" value='@Html.Raw(Json.Serialize(Model.First().WeeklyLoginCounts))' />
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/js/loginChart.js"></script>

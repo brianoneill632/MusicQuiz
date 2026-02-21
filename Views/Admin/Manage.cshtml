@@ -1,0 +1,36 @@
+﻿@model MusicQuiz.Web.Models.Admin.ManageUserRolesViewModel
+
+@{
+    ViewData["Title"] = "Manage User Roles";
+}
+
+<h2>Manage Roles for @Model.Email</h2>
+
+<form asp-action="Manage" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <div class="d-flex flex-column align-items-center" style="width: 100%;">
+        <label asp-for="FirstName">First Name</label>
+        <input asp-for="FirstName" class="form-control" readonly autocomplete="off" />
+    </div>
+    <div class="d-flex flex-column align-items-center" style="width: 100%;">
+        <label asp-for="LastName">Last Name</label>
+        <input asp-for="LastName" class="form-control" readonly autocomplete="off" />
+    </div>
+    <div class="d-flex flex-column align-items-center" style="width: 100%;">
+        <label asp-for="StudentID">Student ID</label>
+        <input asp-for="StudentID" class="form-control" readonly autocomplete="off" />
+    </div>
+    <div class="d-flex flex-column align-items-center" style="width: 100%;">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control" readonly autocomplete="off" />
+    </div>
+    <div class="d-flex flex-column align-items-center mb-3" style="width: 100%;">
+        <label asp-for="SelectedRole">User Role</label>
+        <select asp-for="SelectedRole" class="form-select" asp-items="@(new SelectList(Model.Roles, "Name", "Name", Model.SelectedRole))" class="form-control" autocomplete="off"></select>
+    </div>
+    <div class="d-flex flex-column align-items-center" style="width: 100%;">
+        <button type="submit" class="btn btn-danger w-100 w-md-75 mb-2" style="max-width: 300px;">Update</button>
+        <a asp-action="Index" class="btn btn-secondary w-100 w-md-75" style="max-width: 300px;">Cancel</a>
+    </div>
+</form>
+

@@ -1,0 +1,135 @@
+﻿@model List<MusicQuiz.Web.Models.Assessment.AssessmentViewModel>
+
+@{
+    ViewData["Title"] = "Assessment";
+}
+
+<div class="quiz-container compact-quiz">
+    @if (Model.Any() && !Model.First().IsUserVerified)
+    {
+        <div class="alert alert-warning alert-dismissible fade show mb-4" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle me-3 fa-2x"></i>
+                <div>
+                    <h5 class="mb-1">Email Verification Required</h5>
+                    <p class="mb-0">Your email address has not been verified. Please check your inbox for a verification link to access assessments.</p>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-circle me-3"></i>
+                <div><strong>Error:</strong> @TempData["ErrorMessage"]</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="section-header mb-4">
+        <h1 class="text-center">@ViewData["Title"]</h1>
+        <hr class="mb-4" />
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4 text-center">
+                <div class="mb-3">
+                    <i class="fas fa-exclamation-circle text-danger fa-3x"></i>
+                </div>
+                <h2 class="text-red-bold">OOPS!</h2>
+                <p class="mb-0">It looks like you have no assessments yet. If you're expecting an assessment to be available, please contact your tutor.</p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-body p-4">
+                <p class="text-center mb-4">Below are all the available assessments for you. If you're expecting a different assessment to be available, please contact your tutor.</p>
+
+                <div class="table-responsive">
+                    <table class="table table-modern">
+                        <thead>
+                            <tr>
+                                <th>Topic</th>
+                                <th>Open From</th>
+                                <th>Open To</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var assessment in Model)
+                            {
+                                <tr class="@(assessment.IsCompleted ? "row-success" : assessment.IsUnlocked ? "" : "row-locked")">
+                                    <td>
+                                        <span class="fw-bold">@assessment.TopicName</span>
+                                    </td>
+                                    <td>@assessment.OpenFrom.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@assessment.OpenTo.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td class="text-center">
+                                        @if (!assessment.IsUserVerified)
+                                        {
+                                            <button class="btn btn-outline-warning" disabled>
+                                                <i class="fas fa-exclamation-circle me-2"></i> Verify Email
+                                            </button>
+                                        }
+                                        else if (assessment.IsCompleted)
+                                        {
+                                            <button class="btn btn-outline-success" disabled>
+                                                <i class="fas fa-check-circle me-2"></i> Completed
+                                            </button>
+                                        }
+                                        else if (assessment.IsUnlocked)
+                                        {
+                                            <a asp-action="StartAssessment" asp-route-id="@assessment.ID" class="btn btn-danger">
+                                                <i class="fas fa-play-circle me-2"></i> Start Assessment
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-outline-secondary" disabled>
+                                                <i class="fas fa-lock me-2"></i> Locked
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-3">
+                <div class="legend-items d-flex justify-content-center flex-wrap gap-3 small">
+                    <div class="legend-item">
+                        <span class="status-icon correct-first"><i class="fas fa-check-circle"></i></span>
+                        <span>Completed Assessment</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="status-icon unanswered"><i class="fas fa-play-circle"></i></span>
+                        <span>Available Assessment</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="status-icon locked"><i class="fas fa-lock"></i></span>
+                        <span>Locked Assessment</span>
+                    </div>
+                    @if (Model.Any() && !Model.First().IsUserVerified)
+                    {
+                        <div class="legend-item">
+                            <span class="status-icon warning"><i class="fas fa-exclamation-circle"></i></span>
+                            <span>Email Verification Required</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

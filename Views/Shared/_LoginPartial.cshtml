@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using MusicQuiz.Core.Entities
+@using MusicQuiz.Application.Services
+@inject SignInManager<UserData> SignInManager
+@inject UserManager<UserData> UserManager
+@inject UserExpService UserExpService
+
+<ul class="navbar-nav ms-auto">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var user = UserManager.GetUserAsync(User).Result;
+        if (user != null)
+        {
+            var progressData = UserExpService.CalculateExpProgress(user);
+            var isMaxLevel = (user.GetLevel() == 5);
+            var progressText = isMaxLevel
+            ? $"{user.EXP}EXP"
+            : $"{progressData.expProgress}/{progressData.expNeeded}EXP";
+
+            <li class="nav-item d-flex align-items-center me-2">
+                <div class="progress-container">
+                    <div class="circular-progress"
+                         style="--progress: @progressData.progressPercentage; --fill-color: @(isMaxLevel ? "#D4AF37" : "#0D6EFD")">
+                        <span class="level-text @(isMaxLevel ? "gold" : "")">@user.GetLevel()</span>
+                    </div>
+                    <span class="progress-info ms-2"><strong>@progressText</strong></span>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user-circle me-1"></i> Account
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="accountDropdown">
+                    <li>
+                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+                            <i class="fas fa-cog me-2"></i> Manage Account
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form class="m-0" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button type="submit" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt me-2"></i> Logout
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <span class="nav-link text-warning">
+                    <i class="fas fa-exclamation-triangle me-1"></i> Error loading user data
+                </span>
+            </li>
+        }
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link @((ViewData["ActiveNav"] as string) == "Register" ? "active" : "")" asp-area="Identity" asp-page="/Account/Register">
+                <i class="fas fa-user-plus me-1"></i> Register
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @((ViewData["ActiveNav"] as string) == "Login" ? "active" : "")" asp-area="Identity" asp-page="/Account/Login">
+                <i class="fas fa-sign-in-alt me-1"></i> Login
+            </a>
+        </li>
+    }
+</ul>

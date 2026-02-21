@@ -1,0 +1,51 @@
+﻿@model MusicQuiz.Web.Models.Admin.AssessmentViewModel
+
+@{
+    ViewData["Title"] = "Add Assessment";
+}
+
+<h1>Add Assessment</h1>
+
+<form asp-action="AddAssessment" method="post" class="form">
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label asp-for="AcademicYear" class="control-label">Academic Year</label>
+        <select asp-for="AcademicYear" class="form-control form-select" autocomplete="off">
+            <option value="">Select Academic Year</option>
+            @foreach (var year in Model.AcademicYearOptions)
+            {
+                <option value="@year">@year</option>
+            }
+        </select>
+        <span asp-validation-for="AcademicYear" class="text-danger"></span>
+    </div>
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label asp-for="OpenFrom" class="control-label">Open From</label>
+        <input asp-for="OpenFrom" class="form-control" type="datetime-local" value="@Model.OpenFrom.ToString("yyyy-MM-ddTHH:mm")" />
+        <span asp-validation-for="OpenFrom" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label asp-for="OpenTo" class="control-label">Open To</label>
+        <input asp-for="OpenTo" class="form-control" type="datetime-local" value="@Model.OpenTo.ToString("yyyy-MM-ddTHH:mm")" />
+        <span asp-validation-for="OpenTo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3" style="width: 100%; max-width: 100%;">
+        <label asp-for="SelectedTopic" class="control-label">Topic</label>
+        <select asp-for="SelectedTopic" class="form-control form-select" asp-items="Html.GetEnumSelectList<MusicQuiz.Core.Enums.Topic>()" autocomplete="off">
+            <option value="">-- Select Topic --</option>
+        </select>
+        <span asp-validation-for="SelectedTopic" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex flex-column align-items-center" style="width: 100%;">
+        <button type="submit" class="btn btn-primary w-100 w-md-75 mb-2" style="max-width: 300px;">Add</button>
+        <a asp-action="ViewAssessments" class="btn btn-secondary w-100 w-md-75" style="max-width: 300px;">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

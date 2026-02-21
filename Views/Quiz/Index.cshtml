@@ -1,0 +1,79 @@
+﻿@model MusicQuiz.Web.Models.Home.MusicQuizViewModel
+@{
+    ViewData["Title"] = "Quiz";
+}
+@section Scripts {
+    <script src="~/js/selectTopic.js"></script>
+
+    <script>
+        function selectOption(topic, className) {
+            document.getElementById("selectedTopic").value = topic;
+            var options = document.getElementsByClassName(className);
+            for (var i = 0; i < options.length; i++) {
+                options[i].classList.remove("selected");
+            }
+            document.getElementById(topic).classList.add("selected");
+            document.getElementById("quizForm").submit();
+        }
+
+        function validateForm() {
+            var selectedTopic = document.getElementById("selectedTopic").value;
+            if (!selectedTopic) {
+                alert("Please select a topic.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
+
+<div class="quiz-container">
+    <div class="section-header text-center mb-4">
+        <h1 class="display-4">@ViewData["Title"]</h1>
+        <p class="lead">Choose a topic to test your music knowledge</p>
+    </div>
+
+    <div class="card shadow mb-5">
+        <div class="card-body p-md-5 p-4">
+            <h2 class="section-title mb-4">Select a Topic</h2>
+
+            <form id="quizForm" method="post" action="/Quiz/SelectDifficulty" onsubmit="return validateForm()">
+                <div class="topic-grid">
+                    @foreach (var topic in Model.Topics)
+                    {
+                        <div class="topic-card" id="@topic.Topic" onclick="selectOption('@topic.Topic', 'topic-card')">
+                            <div class="topic-icon">
+                                @{
+                                    var iconClass = ((int)topic.Topic) switch
+                                    {
+                                        0 => "fa-wave-square",  // SineWave
+                                        1 => "fa-volume-up",    // PinkNoise
+                                        2 => "fa-users",        // Ensemble
+                                        3 => "fa-guitar",       // Instrument
+                                        _ => "fa-music"
+                                    };
+                                }
+                                <i class="fas @iconClass"></i>
+                            </div>
+                            <div class="topic-name">@topic.Description</div>
+                        </div>
+                    }
+                </div>
+                <input type="hidden" id="selectedTopic" name="selectedTopic" value="@Model.SelectedTopic" />
+            </form>
+
+            <div class="text-center mt-5">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-section p-4 rounded shadow-sm">
+        <h3 class="mb-3"><i class="fas fa-info-circle text-danger me-2"></i>How it works</h3>
+        <p>Select a topic above to begin your quiz journey. After choosing a topic, you'll select a difficulty level and then start answering questions to test your knowledge.</p>
+        <p class="mb-0">Each topic focuses on different aspects of music theory and history. Choose the one you're most interested in or challenge yourself with something new!</p>
+    </div>
+</div>
+

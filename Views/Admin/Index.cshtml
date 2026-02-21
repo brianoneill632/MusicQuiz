@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Admin";
+}
+
+<div class="container py-4">
+    <h1 class="mb-3 text-center">Admin Dashboard</h1>
+    <p class="text-muted text-center mb-4">Welcome to the admin area. Manage users, questions, and assessments efficiently.</p>
+
+    <h2 class="mb-3 text-center">Users</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <a asp-action="UserList" class="btn btn-primary btn-lg w-100 mx-auto d-block">Manage User Roles</a>
+        </div>
+    </div>
+
+    <hr />
+
+    <h2 class="mb-3 text-center">Music</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <a asp-action="ManageMusicFiles" class="btn btn-primary btn-lg w-100 mx-auto d-block">Manage Music Files</a>
+        </div>
+    </div>
+
+    <hr />
+
+    <h2 class="mb-3 text-center">Questions</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <a asp-action="ViewQuestions" class="btn btn-primary btn-lg w-100 mx-auto d-block">Manage Questions</a>
+        </div>
+    </div>
+
+    <hr />
+
+    <h2 class="mb-3 text-center">Assessments</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <a asp-action="ViewAssessments" class="btn btn-primary btn-lg w-100 mx-auto d-block">Manage Assessments</a>
+        </div>
+    </div>
+
+    <hr />
+
+    <h2 class="mb-3 text-center">Reports</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6 d-grid gap-3">
+            <a asp-action="UserLogins" class="btn btn-primary btn-lg w-100 mx-auto d-block">User Logins</a>
+            <a asp-action="ViewQuizResults" class="btn btn-primary btn-lg w-100 mx-auto d-block">Quiz Results</a>
+            <a asp-action="ViewAssessmentResults" class="btn btn-primary btn-lg w-100 mx-auto d-block">Assessment Results</a>
+        </div>
+    </div>
+</div>

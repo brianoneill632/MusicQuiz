@@ -1,0 +1,162 @@
+﻿@model MusicQuiz.Web.Models.Leaderboards.LeaderboardViewModel
+@{
+    ViewData["Title"] = "Leaderboards";
+}
+
+<div class="leaderboard-container">
+    <div class="section-header text-center mb-4">
+        <h1 class="display-4">@ViewData["Title"]</h1>
+        <p class="lead">See who's topping the charts in music knowledge!</p>
+    </div>
+
+    <div class="card shadow mb-5">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="section-title mb-0">Top Performers - @(Model.SelectedAcademicYear)</h2>
+                <div class="year-filter">
+                    <form method="post" class="d-flex flex-wrap justify-content-center gap-2">
+                        @foreach (var year in Model.AcademicYearOptions)
+                        {
+                            if (year.Equals("All Time"))
+                            {
+                                <button type="submit" name="academicYear" value="@year"
+                                        class="btn @(year == Model.SelectedAcademicYear ? "btn-danger" : "btn-outline-danger")">
+                                    <i class="fas fa-infinity me-1"></i> @year
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="submit" name="academicYear" value="@year"
+                                        class="btn @(year == Model.SelectedAcademicYear ? "btn-danger" : "btn-outline-danger")">
+                                    Year @year
+                                </button>
+                            }
+                        }
+                    </form>
+                </div>
+            </div>
+
+            @if (Model.TopUsers != null && Model.TopUsers.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-modern table-hover">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Name</th>
+                                <th class="text-end">EXP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.TopUsers.Count; i++)
+                            {
+                                var user = Model.TopUsers[i];
+                                string rowClass = user.IntID == Model.CurrentUser?.IntID ? "current-user" : "";
+                                string rankClass = "";
+                                string trophy = "";
+
+                                if (i == 0)
+                                {
+                                    rankClass = "gold-rank";
+                                    trophy = "<i class=\"fas fa-trophy gold-trophy\"></i>";
+                                }
+                                else if (i == 1)
+                                {
+                                    rankClass = "silver-rank";
+                                    trophy = "<i class=\"fas fa-medal silver-trophy\"></i>";
+                                }
+                                else if (i == 2)
+                                {
+                                    rankClass = "bronze-rank";
+                                    trophy = "<i class=\"fas fa-award bronze-trophy\"></i>";
+                                }
+
+                                <tr class="@rankClass @rowClass">
+                                    <td class="rank-column">@(i + 1)</td>
+                                    <td>
+                                        <div class="d-flex align-items-center rank-name">
+                                            @if (!string.IsNullOrEmpty(trophy))
+                                            {
+                                                <div class="trophy me-2">@Html.Raw(trophy)</div>
+                                            }
+                                            <div>@user.FirstName @user.LastName</div>
+                                        </div>
+                                    </td>
+                                    <td class="text-end fw-bold">@user.EXP</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info text-center" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    No data to display. It looks like no users have registered for this year.
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="divider-wave my-5"></div>
+
+    @if (Model.CurrentUser != null)
+    {
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h3 class="mb-0">Your Current Ranking</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-modern mb-0">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Name</th>
+                                <th>EXP</th>
+                                <th>Academic Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="current-user">
+                                <td>
+                                    @if (Model.UserRank != -1)
+                                    {
+                                        <span class="badge bg-danger">@Model.UserRank</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Not Ranked</span>
+                                    }
+                                </td>
+                                <td class="fw-bold">@Model.CurrentUser?.FirstName @Model.CurrentUser?.LastName</td>
+                                <td class="fw-bold">@Model.CurrentUser?.EXP</td>
+                                <td>@Model.CurrentUser?.AcademicYear</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow text-center">
+            <div class="card-body py-5">
+                <i class="fas fa-user-plus fa-3x text-danger mb-3"></i>
+                <h2 class="card-title">Join the Competition</h2>
+                <p class="card-text mb-4">Sign in to see your ranking and track your progress on the leaderboards!</p>
+
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a class="btn btn-danger" asp-area="Identity" asp-page="/Account/Register">
+                        <i class="fas fa-user-plus me-2"></i>Register
+                    </a>
+                    <a class="btn btn-outline-danger" asp-area="Identity" asp-page="/Account/Login">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

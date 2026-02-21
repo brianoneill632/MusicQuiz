@@ -1,0 +1,193 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>aspnet-MusicQuiz-4E9263FE-42EA-4727-AA43-46B7F725637E</UserSecretsId>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="wwwroot\Music\Guitar\**" />
+	  <Compile Remove="wwwroot\Music\Harp\**" />
+	  <Compile Remove="wwwroot\Music\Miramba\**" />
+	  <Compile Remove="wwwroot\Music\Piano\**" />
+	  <Compile Remove="wwwroot\Music\Pink Noise\Pink Noise 2\**" />
+	  <Compile Remove="wwwroot\Music\Pink Noise\Pink Noise 3\**" />
+	  <Compile Remove="wwwroot\Music\Pink Noise\Pink Noise 4\**" />
+	  <Compile Remove="wwwroot\Music\Pink Noise\Pink Noise 5\**" />
+	  <Content Remove="wwwroot\Music\Guitar\**" />
+	  <Content Remove="wwwroot\Music\Harp\**" />
+	  <Content Remove="wwwroot\Music\Miramba\**" />
+	  <Content Remove="wwwroot\Music\Piano\**" />
+	  <Content Remove="wwwroot\Music\Pink Noise\Pink Noise 2\**" />
+	  <Content Remove="wwwroot\Music\Pink Noise\Pink Noise 3\**" />
+	  <Content Remove="wwwroot\Music\Pink Noise\Pink Noise 4\**" />
+	  <Content Remove="wwwroot\Music\Pink Noise\Pink Noise 5\**" />
+	  <EmbeddedResource Remove="wwwroot\Music\Guitar\**" />
+	  <EmbeddedResource Remove="wwwroot\Music\Harp\**" />
+	  <EmbeddedResource Remove="wwwroot\Music\Miramba\**" />
+	  <EmbeddedResource Remove="wwwroot\Music\Piano\**" />
+	  <EmbeddedResource Remove="wwwroot\Music\Pink Noise\Pink Noise 2\**" />
+	  <EmbeddedResource Remove="wwwroot\Music\Pink Noise\Pink Noise 3\**" />
+	  <EmbeddedResource Remove="wwwroot\Music\Pink Noise\Pink Noise 4\**" />
+	  <EmbeddedResource Remove="wwwroot\Music\Pink Noise\Pink Noise 5\**" />
+	  <None Remove="wwwroot\Music\Guitar\**" />
+	  <None Remove="wwwroot\Music\Harp\**" />
+	  <None Remove="wwwroot\Music\Miramba\**" />
+	  <None Remove="wwwroot\Music\Piano\**" />
+	  <None Remove="wwwroot\Music\Pink Noise\Pink Noise 2\**" />
+	  <None Remove="wwwroot\Music\Pink Noise\Pink Noise 3\**" />
+	  <None Remove="wwwroot\Music\Pink Noise\Pink Noise 4\**" />
+	  <None Remove="wwwroot\Music\Pink Noise\Pink Noise 5\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="wwwroot\Music\Ensembles\Ensemble 1\Ensemble 2 Minus 125Hz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 1\Ensemble 2 Minus 1kHz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 1\Ensemble 2 Minus 250Hz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 1\Ensemble 2 Minus 2kHz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 1\Ensemble 2 Minus 4kHz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 1\Ensemble 2 Minus 500Hz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 1\Ensemble 2 Minus 8kHz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 1\Ensemble 2.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 2\Ensemble2_HPF_1000Hz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 2\Ensemble2_HPF_125Hz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 2\Ensemble2_HPF_250Hz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 2\Ensemble2_HPF_500Hz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 2\Ensemble2_Reference.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 3\Ensemble 1 Minus 125Hz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 3\Ensemble 1 Minus 1kHz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 3\Ensemble 1 Minus 250Hz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 3\Ensemble 1 Minus 2kHz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 3\Ensemble 1 Minus 4kHz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 3\Ensemble 1 Minus 500Hz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 3\Ensemble 1 Minus 8kHz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 3\Ensemble 1.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 4\Ensemble3_HPF_1000Hz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 4\Ensemble3_HPF_125Hz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 4\Ensemble3_HPF_250Hz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 4\Ensemble3_HPF_500Hz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 4\Ensemble3_Reference.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 5\Ensemble 3 Minus 125Hz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 5\Ensemble 3 Minus 1kHz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 5\Ensemble 3 Minus 250Hz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 5\Ensemble 3 Minus 2kHz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 5\Ensemble 3 Minus 4kHz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 5\Ensemble 3 Minus 500Hz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 5\Ensemble 3 Minus 8kHz Octave.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 5\Ensemble 3.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 6\Ensemble1_HPF_1000Hz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 6\Ensemble1_HPF_125Hz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 6\Ensemble1_HPF_250Hz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 6\Ensemble1_HPF_500Hz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 6\Ensemble1_Reference.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 7\Ensemble2_LPF_1kHz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 7\Ensemble2_LPF_2kHz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 7\Ensemble2_LPF_4kHz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 7\Ensemble2_LPF_8kHz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 7\Ensemble2_Reference.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 8\Ensemble1_LPF_1kHz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 8\Ensemble1_LPF_2kHz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 8\Ensemble1_LPF_4kHz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 8\Ensemble1_LPF_8kHz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 8\Ensemble1_Reference.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 9\Ensemble3_LPF_1kHz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 9\Ensemble3_LPF_2kHz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 9\Ensemble3_LPF_4kHz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 9\Ensemble3_LPF_8kHz.wav" />
+		<None Include="wwwroot\Music\Ensembles\Ensemble 9\Ensemble3_Reference.wav" />
+		<None Include="wwwroot\Music\Pink Noise\Pink Noise 1\100Hz_Octave_Noise.wav" />
+		<None Include="wwwroot\Music\Pink Noise\Pink Noise 1\1600Hz_Octave_Noise.wav" />
+		<None Include="wwwroot\Music\Pink Noise\Pink Noise 1\200Hz_Octave_Noise.wav" />
+		<None Include="wwwroot\Music\Pink Noise\Pink Noise 1\3200Hz_Octave_Noise.wav" />
+		<None Include="wwwroot\Music\Pink Noise\Pink Noise 1\400Hz_Octave_Noise.wav" />
+		<None Include="wwwroot\Music\Pink Noise\Pink Noise 1\6400Hz_Octave_Noise.wav" />
+		<None Include="wwwroot\Music\Pink Noise\Pink Noise 1\800Hz_Octave_Noise.wav" />
+		<None Include="wwwroot\Music\SineWave\1.25kHz.wav" />
+		<None Include="wwwroot\Music\SineWave\1.6kHz.wav" />
+		<None Include="wwwroot\Music\SineWave\100Hz.wav" />
+		<None Include="wwwroot\Music\SineWave\10kHz.wav" />
+		<None Include="wwwroot\Music\SineWave\12.5kHz.wav" />
+		<None Include="wwwroot\Music\SineWave\125Hz.wav" />
+		<None Include="wwwroot\Music\SineWave\160Hz.wav" />
+		<None Include="wwwroot\Music\SineWave\16kHz.wav" />
+		<None Include="wwwroot\Music\SineWave\1kHz.wav" />
+		<None Include="wwwroot\Music\SineWave\2.5kHz.wav" />
+		<None Include="wwwroot\Music\SineWave\200Hz.wav" />
+		<None Include="wwwroot\Music\SineWave\250Hz.wav" />
+		<None Include="wwwroot\Music\SineWave\2kHz.wav" />
+		<None Include="wwwroot\Music\SineWave\3.15kHz.wav" />
+		<None Include="wwwroot\Music\SineWave\315Hz.wav" />
+		<None Include="wwwroot\Music\SineWave\400Hz.wav" />
+		<None Include="wwwroot\Music\SineWave\4kHz.wav" />
+		<None Include="wwwroot\Music\SineWave\500Hz.wav" />
+		<None Include="wwwroot\Music\SineWave\5kHz.wav" />
+		<None Include="wwwroot\Music\SineWave\6.3kHz.wav" />
+		<None Include="wwwroot\Music\SineWave\630Hz.wav" />
+		<None Include="wwwroot\Music\SineWave\63Hz.wav" />
+		<None Include="wwwroot\Music\SineWave\800Hz.wav" />
+		<None Include="wwwroot\Music\SineWave\80Hz.wav" />
+		<None Include="wwwroot\Music\SineWave\8kHz.wav" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Azure.Identity" Version="1.13.2" />
+		<PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
+		<PackageReference Include="MailKit" Version="4.11.0" />
+		<PackageReference Include="MessagePack" Version="2.5.192" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.11" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.11" />
+		<PackageReference Include="Microsoft.Build.Locator" Version="1.7.8" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0" />
+		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.2.1" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+		<PackageReference Include="MimeKit" Version="4.11.0" />
+		<PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.8" />
+		<PackageReference Include="MySqlConnector" Version="2.4.0" />
+		<PackageReference Include="NuGet.Common" Version="6.12.1" />
+		<PackageReference Include="NuGet.Protocol" Version="6.12.1" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+		<PackageReference Include="Postmark" Version="5.2.0" />
+		<PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="4.11.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.11.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\MusicQuiz.Application\MusicQuiz.Application.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="Views\Assessment\ShowQuestion.cshtml">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Update="wwwroot\favicon.ico">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="wwwroot\js\loadMusicFiles.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<MusicQuiz.Web.Models.Admin.UserListViewModel>
+
+@{
+    ViewData["Title"] = "User List";
+}
+
+<h1 class="text-center">User List</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>
+                    <a asp-action="Manage" asp-route-userId="@user.UserId" class="btn btn-primary">Manage Roles</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="d-flex flex-column align-items-center" style="width: 100%;">
+    <a asp-action="Index" class="btn btn-secondary w-100" style="max-width: 300px;">Back</a>
+</div>

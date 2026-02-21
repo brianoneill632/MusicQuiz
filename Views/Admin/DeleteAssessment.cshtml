@@ -1,0 +1,52 @@
+﻿@model MusicQuiz.Web.Models.Admin.DeleteAssessmentViewModel
+
+@{
+    ViewData["Title"] = "Confirm Delete";
+}
+
+<h1 class="text-danger">Confirm Assesment Deletion</h1>
+
+@if (Model.TakenCount > 0)
+{
+    <div class="alert alert-warning">
+        <strong>Warning:</strong> @Model.TakenCount people have already taken this assessment.
+    </div>
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>Academic Year</th>
+        <td>@Model.AcademicYear</td>
+    </tr>
+    <tr>
+        <th>Topic</th>
+        <td>@Model.Topic</td>
+    </tr>
+    <tr>
+        <th>Open from</th>
+        <td>@Model.OpenFrom</td>
+    </tr>
+    <tr>
+        <th>Open to</th>
+        <td>@Model.OpenTo</td>
+    </tr>
+</table>
+
+<form asp-action="DeleteAssessment" method="post">
+    <input type="hidden" asp-for="AssessmentId" />
+
+    @if (Model.TakenCount > 0)
+    {
+        <div class="form-check">
+            <input asp-for="DeleteAssociatedResults" class="form-check-input" type="checkbox" />
+            <label class="form-check-label" for="DeleteAssociatedResults">
+                Delete all associated user results?
+            </label>
+        </div>
+    }
+
+    <div class="d-flex flex-column align-items-center" style="width: 100%;">
+        <button type="submit" class="btn btn-danger w-100 mb-2" style="max-width: 300px;">Confirm Delete</button>
+        <a asp-action="ViewAssessments" class="btn btn-secondary w-100" style="max-width: 300px;">Cancel</a>
+    </div>
+</form>

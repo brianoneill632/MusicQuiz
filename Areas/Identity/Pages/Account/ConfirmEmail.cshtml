@@ -1,0 +1,45 @@
+﻿@page
+@model MusicQuiz.Web.Areas.Identity.Pages.Account.ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirm email";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header @(Model.StatusMessage.Contains("Thank you") ? "bg-success" : "bg-danger") text-white">
+                <h5 class="mb-0">@(Model.StatusMessage.Contains("Thank you") ? "Email Verified" : "Verification Error")</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.StatusMessage.Contains("Thank you"))
+                {
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i>
+                        @Model.StatusMessage
+                    </div>
+
+                    <p>Your email has been successfully verified. You can now log in to your Music Quiz account.</p>
+
+                    <div class="mt-4">
+                        <a asp-page="./Login" class="btn btn-primary">Log in</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        @Model.StatusMessage
+                    </div>
+
+                    <p>There was a problem verifying your email. Please try again or contact support.</p>
+
+                    <div class="mt-4">
+                        <a asp-page="./Login" class="btn btn-secondary">Return to Login</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

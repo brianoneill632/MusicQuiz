@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MusicQuiz</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" asp-append-version="true">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="modern-body">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <!-- Logo in navbar -->
+                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/img/Queens White Logo - Landscape.png" alt="Music Quiz Logo" style="height: 40px; max-height: 40px; margin-top: -5px; margin-bottom: -5px;" />
+                    <span class="ms-2 high-contrast-text">QUB Music Quiz</span>
+                </a>
+
+                <!-- Navbar toggle button for mobile -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link px-3 high-contrast-nav-link" href="/Quiz">
+                                <i class="fas fa-play-circle me-1"></i> Quiz
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 high-contrast-nav-link" href="/Assessment">
+                                <i class="fas fa-tasks me-1"></i> Assessment
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 high-contrast-nav-link" href="/Leaderboards">
+                                <i class="fas fa-trophy me-1"></i> Leaderboards
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 high-contrast-nav-link" href="/Privacy">
+                                <i class="fas fa-shield-alt me-1"></i> Privacy
+                            </a>
+                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link px-3 high-contrast-nav-link admin-link" href="/Admin">
+                                    <i class="fas fa-user-shield me-1"></i> Admin
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+
+        <span id="timer" class="timer-display"></span>
+    </header>
+
+    <div class="page-content">
+        <!-- Add id and tabindex for skip link target -->
+        <main id="main-content" role="main" class="pb-5 container" tabindex="-1">
+            @RenderBody()
+        </main>
+    </div>
+
+    <div class="@(ViewData["ActiveNav"] as string == "Admin" ? "blue-bar-modern" : "red-bar-modern")"></div>
+
+    <footer class="footer py-4 mt-auto">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <span>&copy; 2025 - MusicQuiz</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/GoBack.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

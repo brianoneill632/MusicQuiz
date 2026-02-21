@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Assessment Completed";
+}
+
+<div class="quiz-container compact-quiz">
+    <div class="section-header mb-4">
+        <h1 class="text-center">@ViewBag.Title</h1>
+        <hr class="mb-4" />
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body p-5 text-center">
+            <div class="mb-4">
+                <i class="fas fa-check-circle text-success fa-4x"></i>
+            </div>
+
+            <h2 class="mb-4">Thank you for completing the assessment!</h2>
+
+            <p class="mb-5 lead">
+                Your responses have been recorded successfully.
+                Your tutor will review your answers and reveal your results in due time.
+            </p>
+
+            <div class="d-flex justify-content-center">
+                <a href="/" class="btn btn-danger btn-lg px-5">
+                    <i class="fas fa-home me-2"></i> Return Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-3 text-center">
+            <p class="mb-0 small text-muted">
+                <i class="fas fa-info-circle me-1"></i>
+                If you have any questions about your assessment, please contact your tutor.
+            </p>
+        </div>
+    </div>
+</div>

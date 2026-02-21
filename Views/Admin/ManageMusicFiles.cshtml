@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Manage Music Files";
+}
+
+<h1>Manage Music Files</h1>
+<hr />
+<h2 class="text-center">Upload Music File</h2>
+<form id="uploadForm" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
+    <div class="mb-3 w-100" style="max-width: 300px;">
+        <label for="fileInput" class="form-label">Choose music file to upload</label>
+        <input type="file" id="fileInput" class="form-control" accept="audio/*" />
+        <button type="button" class="btn btn-primary mt-3 w-100" onclick="uploadFile()" aria-label="Upload selected music file">Upload</button>
+    </div>
+</form>
+
+<hr />
+
+<h3 class="text-center">Browse Music Files</h3>
+<div class="mb-3 d-flex flex-column align-items-center">
+    <label for="musicFilesDropdown" class="form-label">Select a music file to manage</label>
+    <select id="musicFilesDropdown" class="form-select" autocomplete="off">
+        <option value="">Select a music file</option>
+    </select>
+</div>
+
+<div class="d-flex flex-column align-items-center" style="width: 100%;">
+    <button type="submit" id="login-submit" class="btn btn-primary w-100 w-md-75 mb-2" style="max-width: 300px;" onclick="deleteFile()">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary w-100" style="max-width: 300px;">Back</a>
+</div>
+
+@section Scripts {
+    <script src="~/js/UploadFile.js"></script>
+}

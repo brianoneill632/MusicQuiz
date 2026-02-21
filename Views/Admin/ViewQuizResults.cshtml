@@ -1,0 +1,275 @@
+﻿@{
+    ViewData["Title"] = "Quiz Analytics";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<p class="text-center">Explore quiz performance and trends.</p>
+
+<div class="text-center mb-4">
+    <div class="btn-group-vertical" style="display: flex; flex-direction: column; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <button id="loggedInBtn" class="btn btn-primary" onclick="showLoggedIn()">Logged In Results</button>
+        <button id="notLoggedInBtn" class="btn btn-primary" onclick="showNotLoggedIn()">Not Logged In Results</button>
+        <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
+    </div>
+</div>
+
+<form asp-action="ViewQuizResults" method="get" class="form">
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label for="topicFilter">Topic:</label>
+        <select id="topicFilter" name="topicFilter" class="form-control form-select" autocomplete="off">
+            <option value="">All</option>
+            @foreach (var topic in Enum.GetValues(typeof(MusicQuiz.Core.Enums.Topic)))
+            {
+                <option value="@((int)topic)" selected="@(ViewBag.SelectedTopic != null && (int)ViewBag.SelectedTopic == (int)topic)">@topic</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label for="difficultyFilter">Difficulty:</label>
+        <select id="difficultyFilter" name="difficultyFilter" class="form-control form-select" autocomplete="off">
+            <option value="">All</option>
+            @foreach (var difficulty in Enum.GetValues(typeof(MusicQuiz.Core.Enums.DifficultyLevel)))
+            {
+                <option value="@((int)difficulty)" selected="@(ViewBag.SelectedDifficulty != null && (int)ViewBag.SelectedDifficulty == (int)difficulty)">@difficulty</option>
+            }
+        </select>
+    </div>
+    <div class="form-group" style="width: 100%; max-width: 100%;">
+        <label for="dateFilter">Month:</label>
+        <select id="dateFilter" name="dateFilter" class="form-control form-select" autocomplete="off">
+            <option value="">All</option>
+            @for (int i = 0; i < 12; i++)
+            {
+                var month = DateTime.Now.AddMonths(-i);
+                var monthValue = month.ToString("MM-yyyy");
+                <option value="@monthValue" selected="@(ViewBag.SelectedMonth == monthValue)">@month.ToString("MMMM yyyy")</option>
+            }
+        </select>
+    </div>
+
+    <input type="hidden" name="pageNumber" value="1" />
+    <input type="hidden" name="pageSize" value="@ViewBag.PageSize" />
+
+    <button type="submit" class="btn btn-primary mt-3">Apply Filters</button>
+</form>
+
+<!-- Hidden Inputs for Chart Data -->
+<input type="hidden" id="scoreDataLoggedIn" value='@Html.Raw(Json.Serialize(ViewBag.ScoreDataLoggedIn))' />
+<input type="hidden" id="userNamesLoggedIn" value='@Html.Raw(Json.Serialize(ViewBag.UserNamesLoggedIn))' />
+<input type="hidden" id="scoreDataNotLoggedIn" value='@Html.Raw(Json.Serialize(ViewBag.ScoreDataNotLoggedIn))' />
+<input type="hidden" id="userNamesNotLoggedIn" value='@Html.Raw(Json.Serialize(ViewBag.UserNamesNotLoggedIn))' />
+<input type="hidden" id="topicColorsLoggedIn" value='@Html.Raw(Json.Serialize(ViewBag.LoggedInTopicColors))' />
+<input type="hidden" id="topicColorsNotLoggedIn" value='@Html.Raw(Json.Serialize(ViewBag.NotLoggedInTopicColors))' />
+
+<!-- Add JS to Toggle Between Results -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+
+<script>
+    let scoreChart;
+
+    function showLoggedIn() {
+        document.getElementById("loggedInResults").style.display = "block";
+        document.getElementById("notLoggedInResults").style.display = "none";
+        document.getElementById("loggedInPagination").style.display = "block";
+        document.getElementById("notLoggedInPagination").style.display = "none";
+        renderCharts("loggedIn");
+    }
+
+    function showNotLoggedIn() {
+        document.getElementById("loggedInResults").style.display = "none";
+        document.getElementById("notLoggedInResults").style.display = "block";
+        document.getElementById("loggedInPagination").style.display = "none";
+        document.getElementById("notLoggedInPagination").style.display = "block";
+        renderCharts("notLoggedIn");
+    }
+
+    function renderCharts(dataType) {
+        const scoreData = dataType === "loggedIn" ? JSON.parse(document.getElementById('scoreDataLoggedIn').value) : JSON.parse(document.getElementById('scoreDataNotLoggedIn').value);
+        const userNames = dataType === "loggedIn" ? JSON.parse(document.getElementById('userNamesLoggedIn').value) : JSON.parse(document.getElementById('userNamesNotLoggedIn').value);
+        const barColors = dataType === "loggedIn" ? JSON.parse(document.getElementById('topicColorsLoggedIn').value) : JSON.parse(document.getElementById('topicColorsNotLoggedIn').value);
+
+        if (scoreChart) {
+            scoreChart.data.labels = userNames;
+            scoreChart.data.datasets[0].data = scoreData;
+            scoreChart.data.datasets[0].backgroundColor = barColors;
+            scoreChart.update();
+        } else {
+            const ctxScore = document.getElementById("scoreChart").getContext("2d");
+            scoreChart = new Chart(ctxScore, {
+                type: "bar",
+                data: {
+                    labels: userNames,
+                    datasets: [{
+                        label: "Score (%)",
+                        data: scoreData,
+                        backgroundColor: barColors
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        renderCharts("loggedIn");
+    });
+</script>
+
+<div class="mt-4">
+    <h2 class="text-center">Quiz Score Distribution</h2>
+    <canvas id="scoreChart" width="400" height="200"></canvas>
+</div>
+
+@if (ViewBag.TopicColorMap != null)
+{
+    <div class="d-flex justify-content-center mt-3 flex-wrap">
+        @foreach (var topic in ViewBag.TopicColorMap)
+        {
+            <div class="d-flex align-items-center mx-3 mb-2">
+                <div style="width: 20px; height: 20px; background-color: @topic.Value; margin-right: 5px; border-radius: 3px;"></div>
+                <span>@topic.Key</span>
+            </div>
+        }
+    </div>
+}
+
+<div id="loggedInResults" style="display:block;">
+    <h3 class="centered mt-4">Logged In User Quiz Attempts</h3>
+    <div id="loggedInPagination" style="display:block;">
+        <div class="d-flex justify-content-center">
+            <div class="pagination">
+                @if (ViewBag.PageNumberLoggedIn > 1)
+                {
+                    <a asp-action="ViewQuizResults"
+                       asp-route-pageNumber="@(ViewBag.PageNumberLoggedIn - 1)"
+                       asp-route-pageSize="@ViewBag.PageSize"
+                       asp-route-topicFilter="@ViewBag.SelectedTopic"
+                       asp-route-difficultyFilter="@ViewBag.SelectedDifficulty"
+                       asp-route-dateFilter="@ViewBag.SelectedMonth"
+                       class="btn btn-outline-secondary btn-sm me-2">Previous</a>
+                }
+                <span class="mx-2">Page @ViewBag.PageNumberLoggedIn of @ViewBag.TotalLoggedInPages</span>
+                @if (ViewBag.PageNumberLoggedIn < ViewBag.TotalLoggedInPages)
+                {
+                    <a asp-action="ViewQuizResults"
+                       asp-route-pageNumber="@(ViewBag.PageNumberLoggedIn + 1)"
+                       asp-route-pageSize="@ViewBag.PageSize"
+                       asp-route-topicFilter="@ViewBag.SelectedTopic"
+                       asp-route-difficultyFilter="@ViewBag.SelectedDifficulty"
+                       asp-route-dateFilter="@ViewBag.SelectedMonth"
+                       class="btn btn-outline-secondary btn-sm ms-2">Next</a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div id="notLoggedInPagination" style="display:none;">
+        <div class="d-flex justify-content-center">
+            <div class="pagination">
+                @if (ViewBag.PageNumberNonLoggedIn > 1)
+                {
+                    <a asp-action="ViewQuizResults"
+                       asp-route-pageNumber="@(ViewBag.PageNumberNonLoggedIn - 1)"
+                       asp-route-pageSize="@ViewBag.PageSize"
+                       asp-route-topicFilter="@ViewBag.SelectedTopic"
+                       asp-route-difficultyFilter="@ViewBag.SelectedDifficulty"
+                       asp-route-dateFilter="@ViewBag.SelectedMonth"
+                       class="btn btn-outline-secondary btn-sm me-2">Previous</a>
+                }
+                <span class="mx-2">Page @ViewBag.PageNumberNonLoggedIn of @ViewBag.TotalNonLoggedInPages</span>
+                @if (ViewBag.PageNumberNonLoggedIn < ViewBag.TotalNonLoggedInPages)
+                {
+                    <a asp-action="ViewQuizResults"
+                       asp-route-pageNumber="@(ViewBag.PageNumberNonLoggedIn + 1)"
+                       asp-route-pageSize="@ViewBag.PageSize"
+                       asp-route-topicFilter="@ViewBag.SelectedTopic"
+                       asp-route-difficultyFilter="@ViewBag.SelectedDifficulty"
+                       asp-route-dateFilter="@ViewBag.SelectedMonth"
+                       class="btn btn-outline-secondary btn-sm ms-2">Next</a>
+                }
+            </div>
+        </div>
+    </div>
+
+
+    @if (ViewBag.LoggedInResults != null && ((List<MusicQuiz.Web.Models.Admin.QuizResultModel>)ViewBag.LoggedInResults).Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-modern">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                        <th>Topic</th>
+                        <th>Difficulty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var quiz in ViewBag.LoggedInResults)
+                    {
+                        string scoreClass = quiz.UserScore >= 80 ? "row-success" : quiz.UserScore >= 50 ? "row-warning" : "row-danger";
+                        <tr class="@scoreClass">
+                            <td>@quiz.Forename @quiz.Surname</td>
+                            <td>@quiz.UserScore.ToString("0.00")%</td>
+                            <td>@quiz.DateOfSubmission.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@quiz.SelectedTopic</td>
+                            <td>@quiz.SelectedDifficulty</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="text-center">No logged-in quiz results available.</p>
+    }
+</div>
+
+<div id="notLoggedInResults" style="display:none;">
+    <h3 class="centered mt-4">Not Logged In User Quiz Attempts</h3>
+    @if (ViewBag.NotLoggedInResults != null && ((List<MusicQuiz.Web.Models.Admin.QuizResultModel>)ViewBag.NotLoggedInResults).Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-modern">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                        <th>Topic</th>
+                        <th>Difficulty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var quiz in ViewBag.NotLoggedInResults)
+                    {
+                        string scoreClass = quiz.UserScore >= 80 ? "row-success" : quiz.UserScore >= 50 ? "row-warning" : "row-danger";
+                        <tr class="@scoreClass">
+                            <td>@quiz.Forename @quiz.Surname</td>
+                            <td>@quiz.UserScore.ToString("0.00")%</td>
+                            <td>@quiz.DateOfSubmission.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@quiz.SelectedTopic</td>
+                            <td>@quiz.SelectedDifficulty</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="text-center">No not-logged-in quiz results available.</p>
+    }
+</div>

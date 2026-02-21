@@ -1,0 +1,35 @@
+﻿@page
+@model MusicQuiz.Web.Areas.Identity.Pages.Account.RegisterConfirmationModel
+@{
+    ViewData["Title"] = "Registration Confirmation";
+}
+
+<h1>@ViewData["Title"]</h1>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Registration Successful</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-envelope me-2"></i>
+                    Please check your email at <strong>@Model.Email</strong> for a confirmation link.
+                </div>
+
+                <p>You need to verify your email address before you can log in to Music Quiz.</p>
+
+                <p class="mb-0">If you don't see the email in your inbox:</p>
+                <ul>
+                    <li>Check your spam or junk folder</li>
+                    <li>Wait a few minutes as delivery can sometimes be delayed</li>
+                    <li>Ensure you entered your email address correctly</li>
+                </ul>
+
+                <div class="mt-4">
+                    <a asp-page="./Login" class="btn btn-primary">Return to Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
